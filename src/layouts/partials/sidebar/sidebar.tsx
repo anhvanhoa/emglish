@@ -1,23 +1,57 @@
 import { Sidebar } from './sidebar.styles';
-import { Avatar, Tooltip } from '@heroui/react';
 import { CompaniesDropdown } from './companies-dropdown';
-import { CollapseItems } from './collapse-items';
 import { SidebarItem } from './sidebar-item';
-import { SidebarMenu } from './sidebar-menu';
-import { HomeIcon } from '@/components/icons/sidebar/home-icon';
-import { AccountsIcon } from '@/components/icons/sidebar/accounts-icon';
-import { PaymentsIcon } from '@/components/icons/sidebar/payments-icon';
-import { BalanceIcon } from '@/components/icons/sidebar/balance-icon';
-import { CustomersIcon } from '@/components/icons/sidebar/customers-icon';
-import { ProductsIcon } from '@/components/icons/sidebar/products-icon';
-import { ReportsIcon } from '@/components/icons/sidebar/reports-icon';
-import { DevIcon } from '@/components/icons/sidebar/dev-icon';
-import { ViewIcon } from '@/components/icons/sidebar/view-icon';
-import { SettingsIcon } from '@/components/icons/sidebar/settings-icon';
 import { useSidebarContext } from '@/provider/layout-context';
-import { FilterIcon } from '@/components/icons/sidebar/filter-icon';
-import { ChangeLogIcon } from '@/components/icons/sidebar/changelog-icon';
 import { useLocation } from 'react-router';
+import { Home, Database, BookOpen, MessageSquare, Book, Music, HelpCircle, Settings, LogOut } from 'lucide-react';
+
+const sidebars = [
+    {
+        title: 'Dashboard',
+        icon: <Home size={18} />,
+        href: '/',
+    },
+    {
+        title: 'Master Data',
+        icon: <Database size={18} />,
+        href: '/master-data',
+    },
+    {
+        title: 'Topic/Lesson',
+        icon: <BookOpen size={18} />,
+        href: '/lesson-topic',
+    },
+    {
+        title: 'Dialog',
+        icon: <MessageSquare size={18} />,
+        href: '/dialog',
+    },
+    {
+        title: 'Story',
+        icon: <Book size={18} />,
+        href: '/story',
+    },
+    {
+        title: 'Song',
+        icon: <Music size={18} />,
+        href: '/song',
+    },
+    {
+        title: 'Quiz',
+        icon: <HelpCircle size={18} />,
+        href: '/quiz',
+    },
+    {
+        title: 'Setting',
+        icon: <Settings size={18} />,
+        href: '/setting',
+    },
+    {
+        title: 'Logout',
+        icon: <LogOut size={18} />,
+        href: '/logout',
+    },
+];
 
 export const SidebarWrapper = () => {
     const { pathname } = useLocation();
@@ -35,57 +69,15 @@ export const SidebarWrapper = () => {
                 </div>
                 <div className='flex flex-col justify-between h-full'>
                     <div className={Sidebar.Body()}>
-                        <SidebarItem title='Home' icon={<HomeIcon />} isActive={pathname === '/'} href='/' />
-                        <SidebarMenu title='Main Menu'>
+                        {sidebars.map((item, index) => (
                             <SidebarItem
-                                isActive={pathname === '/accounts'}
-                                title='Accounts'
-                                icon={<AccountsIcon />}
-                                href='accounts'
+                                key={index}
+                                title={item.title}
+                                icon={item.icon}
+                                isActive={pathname === item.href}
+                                href={item.href}
                             />
-                            <SidebarItem isActive={pathname === '/payments'} title='Payments' icon={<PaymentsIcon />} />
-                            <CollapseItems
-                                icon={<BalanceIcon />}
-                                items={['Banks Accounts', 'Credit Cards', 'Loans']}
-                                title='Balances'
-                            />
-                            <SidebarItem
-                                isActive={pathname === '/customers'}
-                                title='Customers'
-                                icon={<CustomersIcon />}
-                            />
-                            <SidebarItem isActive={pathname === '/products'} title='Products' icon={<ProductsIcon />} />
-                            <SidebarItem isActive={pathname === '/reports'} title='Reports' icon={<ReportsIcon />} />
-                        </SidebarMenu>
-
-                        <SidebarMenu title='General'>
-                            <SidebarItem isActive={pathname === '/developers'} title='Developers' icon={<DevIcon />} />
-                            <SidebarItem isActive={pathname === '/view'} title='View Test Data' icon={<ViewIcon />} />
-                            <SidebarItem isActive={pathname === '/settings'} title='Settings' icon={<SettingsIcon />} />
-                        </SidebarMenu>
-
-                        <SidebarMenu title='Updates'>
-                            <SidebarItem
-                                isActive={pathname === '/changelog'}
-                                title='Changelog'
-                                icon={<ChangeLogIcon />}
-                            />
-                        </SidebarMenu>
-                    </div>
-                    <div className={Sidebar.Footer()}>
-                        <Tooltip content={'Settings'} color='primary'>
-                            <div className='max-w-fit'>
-                                <SettingsIcon />
-                            </div>
-                        </Tooltip>
-                        <Tooltip content={'Adjustments'} color='primary'>
-                            <div className='max-w-fit'>
-                                <FilterIcon />
-                            </div>
-                        </Tooltip>
-                        <Tooltip content={'Profile'} color='primary'>
-                            <Avatar src='https://i.pravatar.cc/150?u=a042581f4e29026704d' size='sm' />
-                        </Tooltip>
+                        ))}
                     </div>
                 </div>
             </div>

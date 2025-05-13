@@ -1,17 +1,36 @@
-import MainLayout from '@/layouts/MainLayout';
-import { Home } from '@/pages/home';
-import { createBrowserRouter } from 'react-router';
+import { createBrowserRouter, type RouteObject } from 'react-router';
+import { routes} from './routes';
 
-const router = createBrowserRouter([
-    {
-        element: <MainLayout />,
-        children: [
-            {
-                path: '/',
-                element: <Home />,
-            },
-        ],
-    },
-]);
+export type AppRoute = {
+    name?: string;
+    children?: AppRoute[];
+} & RouteObject;
 
-export { router };
+const generateBreadcrumbs = (routes: AppRoute[], parents: AppRoute[] = []): AppRoute[] => {
+    return routes.reduce((acc: AppRoute[], route) => {
+        const fullPath = [...parents, route]
+            .map((r) => r.path)
+            .filter(Boolean)
+            .join('/')
+            .replace(/\/+/g, '/');
+        const newRoute = { ...route, path: fullPath };
+        acc.push(newRoute);
+        if (route.children) {
+            acc.push(...generateBreadcrumbs(route.children, [...parents, newRoute]));
+        }
+        return acc;
+    }, []);
+};
+
+export const configBreadcrumbs = generateBreadcrumbs(routes);
+
+const buildRouterConfig = (routes: RouteObject[]) => {
+    return routes.map((route) => ({
+        path: route.path,
+        element: route.element,
+        children: route.children,
+    }));
+};
+
+
+export const router = createBrowserRouter(buildRouterConfig(routes));

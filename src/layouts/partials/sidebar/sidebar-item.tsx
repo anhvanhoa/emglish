@@ -21,19 +21,19 @@ export const SidebarItem = ({ icon, title, isActive, href = "" }: Props) => {
   return (
     <Link
       to={href}
-      className="text-default-900 active:bg-none max-w-full"
+      className="text-default-900 active:bg-none max-w-full mx-2"
     >
       <div
         className={clsx(
           isActive
-            ? "bg-primary-100 [&_svg_path]:fill-primary-500"
+            ? "[&_svg_path]:stroke-primary-500 text-primary-500 font-semibold"
             : "hover:bg-default-100",
-          "flex gap-2 w-full min-h-[44px] h-full items-center px-3.5 rounded-xl cursor-pointer transition-all duration-150 active:scale-[0.98]"
+          "text-sm flex gap-2 w-full h-full items-center px-2 py-2.5 rounded-lg cursor-pointer transition-all duration-150 active:scale-[0.98]"
         )}
         onClick={handleClick}
       >
         {icon}
-        <span className="text-default-900">{title}</span>
+        <span>{title}</span>
       </div>
     </Link>
   );

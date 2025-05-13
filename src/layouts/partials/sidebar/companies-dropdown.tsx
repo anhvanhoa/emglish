@@ -1,128 +1,81 @@
-"use client";
-import { AcmeIcon } from "@/components/icons/acme-icon";
-import { AcmeLogo } from "@/components/icons/acmelogo";
-import { BottomIcon } from "@/components/icons/sidebar/bottom-icon";
-import {
-  Dropdown,
-  DropdownItem,
-  DropdownMenu,
-  DropdownSection,
-  DropdownTrigger,
-} from "@heroui/react";
-import React, { useState } from "react";
-
-interface Company {
-  name: string;
-  location: string;
-  logo: React.ReactNode;
+'use client';
+import FlagAustraliaIcon from '@/components/icons/flag/flag-australia-icon';
+import FlagCnIcon from '@/components/icons/flag/flag-cn-icon';
+import FlagUnitedStatesIcon from '@/components/icons/flag/flag-united-states-icon';
+import FlagVnIcon from '@/components/icons/flag/flag-vn-icon';
+import { Dropdown, DropdownItem, DropdownMenu, DropdownSection, DropdownTrigger } from '@heroui/react';
+import React, { useState } from 'react';
+interface Local {
+    name: string;
+    code: string;
+    flag: React.ReactNode;
 }
 
+const data = [
+    {
+        name: 'China',
+        code: 'cn',
+        flag: <FlagCnIcon />,
+    },
+    {
+        name: 'Vietnam',
+        code: 'vi',
+        flag: <FlagVnIcon />,
+    },
+    {
+        name: 'Australia',
+        code: 'au',
+        flag: <FlagAustraliaIcon />,
+    },
+    {
+        name: 'United States',
+        code: 'us',
+        flag: <FlagUnitedStatesIcon />,
+    },
+];
+
 export const CompaniesDropdown = () => {
-  const [company, setCompany] = useState<Company>({
-    name: "Acme Co.",
-    location: "Palo Alto, CA",
-    logo: <AcmeIcon />,
-  });
-  return (
-    <Dropdown
-      classNames={{
-        base: "w-full min-w-[260px]",
-      }}
-    >
-      <DropdownTrigger className="cursor-pointer">
-        <div className="flex items-center gap-2">
-          {company.logo}
-          <div className="flex flex-col gap-4">
-            <h3 className="text-xl font-medium m-0 text-default-900 -mb-4 whitespace-nowrap">
-              {company.name}
-            </h3>
-            <span className="text-xs font-medium text-default-500">
-              {company.location}
-            </span>
-          </div>
-          <BottomIcon />
-        </div>
-      </DropdownTrigger>
-      <DropdownMenu
-        onAction={(e) => {
-          if (e === "1") {
-            setCompany({
-              name: "Facebook",
-              location: "San Fransico, CA",
-              logo: <AcmeIcon />,
-            });
-          }
-          if (e === "2") {
-            setCompany({
-              name: "Instagram",
-              location: "Austin, Tx",
-              logo: <AcmeLogo />,
-            });
-          }
-          if (e === "3") {
-            setCompany({
-              name: "Twitter",
-              location: "Brooklyn, NY",
-              logo: <AcmeIcon />,
-            });
-          }
-          if (e === "4") {
-            setCompany({
-              name: "Acme Co.",
-              location: "Palo Alto, CA",
-              logo: <AcmeIcon />,
-            });
-          }
-        }}
-        aria-label="Avatar Actions"
-      >
-        <DropdownSection title="Companies">
-          <DropdownItem
-            key="1"
-            startContent={<AcmeIcon />}
-            description="San Fransico, CA"
+    const [local, setLocal] = useState<Local>({
+        name: 'Tiếng việt',
+        code: 'vi',
+        flag: <FlagVnIcon />,
+    });
+    return (
+        <Dropdown
             classNames={{
-              base: "py-4",
-              title: "text-base font-semibold",
+                base: 'w-full min-w-[150px]',
             }}
-          >
-            Facebook
-          </DropdownItem>
-          <DropdownItem
-            key="2"
-            startContent={<AcmeLogo />}
-            description="Austin, Tx"
-            classNames={{
-              base: "py-4",
-              title: "text-base font-semibold",
-            }}
-          >
-            Instagram
-          </DropdownItem>
-          <DropdownItem
-            key="3"
-            startContent={<AcmeIcon />}
-            description="Brooklyn, NY"
-            classNames={{
-              base: "py-4",
-              title: "text-base font-semibold",
-            }}
-          >
-            Twitter
-          </DropdownItem>
-          <DropdownItem
-            key="4"
-            startContent={<AcmeIcon />}
-            description="Palo Alto, CA"
-            classNames={{
-              base: "py-4",
-              title: "text-base font-semibold",
-            }}
-          >
-            Acme Co.
-          </DropdownItem>
-        </DropdownSection>
-      </DropdownMenu>
-    </Dropdown>
-  );
+        >
+            <div className='flex items-center gap-2 justify-between'>
+                <div className='flex flex-col gap-4'>
+                    <h3 className='text-lg font-medium m-0 text-default-900 -mb-4 whitespace-nowrap'>Flutone</h3>
+                    <span className='text-xs font-medium text-default-500'>Learn simple</span>
+                </div>
+                <DropdownTrigger className='cursor-pointer'>
+                    <span className='w-8 rounded-xs overflow-hidden'>{local.flag}</span>
+                </DropdownTrigger>
+            </div>
+            <DropdownMenu>
+                <DropdownSection className='mb-0'>
+                    {data.map((item, index) => (
+                        <DropdownItem
+                            key={index}
+                            className='rounded-md py-2'
+                            value={item.code}
+                            onClick={() => {
+                                setLocal(item);
+                            }}
+                        >
+                            <div className='flex items-center gap-2'>
+                                <div className='w-8 rounded-xs overflow-hidden' title={item.name}>
+                                    {item.flag}
+                                </div>
+                                <span className='text-sm text-default-900'>{item.name}</span>
+                            </div>
+                        </DropdownItem>
+                    ))}
+                </DropdownSection>
+            </DropdownMenu>
+        </Dropdown>
+    );
 };
